@@ -22,3 +22,11 @@
 **Context**: Construction complete. Manual browser load-test pending (user side).
 
 ---
+
+## Change Request — durasi glitch
+**Timestamp**: 2026-06-16T00:10:00Z
+**User Input**: "ubah gangguan jaringan menjadi 5 menit setiap kelipatan 2 menit waktu putar video."
+**AI Response**: Confirmed via clarify = durasi glitch jadi 5 menit (300dtk), trigger tetap kelipatan 2 menit. GLITCH_MS 5000→300000. manifest v1.0.0→1.1.0.
+**Context**: Construction — scoped edit, satu konstanta.
+
+---

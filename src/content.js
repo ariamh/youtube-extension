@@ -7,7 +7,7 @@
   "use strict";
 
   const INTERVAL_SEC = 120; // kelipatan 2 menit
-  const GLITCH_MS = 5000; // durasi glitch ~5 detik
+  const GLITCH_MS = 300000; // durasi glitch 5 menit (300 detik)
   const MSG = "Terjadi gangguan jaringan… menyambungkan kembali";
 
   let enabled = true;
