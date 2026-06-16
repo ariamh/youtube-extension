@@ -1,0 +1,32 @@
+/* YT Buffer Glitch — buffering overlay */
+.ytbg-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2147483646;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  pointer-events: all;
+  cursor: progress;
+}
+.ytbg-spinner {
+  width: 64px;
+  height: 64px;
+  border: 5px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: ytbg-spin 0.9s linear infinite;
+}
+.ytbg-msg {
+  position: absolute;
+  bottom: 18%;
+  color: #fff;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 14px;
+  opacity: 0.85;
+  letter-spacing: 0.3px;
+}
+@keyframes ytbg-spin {
+  to { transform: rotate(360deg); }
+}

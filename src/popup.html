@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      width: 240px;
+      margin: 0;
+      padding: 16px;
+      font-family: "Roboto", Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+    }
+    h1 { font-size: 15px; margin: 0 0 4px; }
+    p { font-size: 12px; color: #aaa; margin: 0 0 14px; line-height: 1.4; }
+    .row { display: flex; align-items: center; justify-content: space-between; }
+    .label { font-size: 13px; }
+    .switch { position: relative; width: 44px; height: 24px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; inset: 0; cursor: pointer;
+      background: #555; border-radius: 24px; transition: .2s;
+    }
+    .slider:before {
+      content: ""; position: absolute; height: 18px; width: 18px;
+      left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .2s;
+    }
+    input:checked + .slider { background: #cc0000; }
+    input:checked + .slider:before { transform: translateX(20px); }
+    .status { margin-top: 12px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>YT Buffer Glitch</h1>
+  <p>Simulasi gangguan jaringan ~5 detik tiap kelipatan 2 menit waktu putar video YouTube.</p>
+  <div class="row">
+    <span class="label">Aktifkan</span>
+    <label class="switch">
+      <input type="checkbox" id="toggle" />
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="status" id="status"></div>
+  <script src="popup.js"></script>
+</body>
+</html>
