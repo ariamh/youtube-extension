@@ -1,8 +1,7 @@
 /* YT Buffer Glitch — popup */
-const DEFAULT_BLOCKLIST = [
-  "18+", "xxx", "porn", "nsfw", "hot", "seksi", "sexy",
-  "dewasa", "bokep", "telanjang", "vulgar"
-];
+const DEFAULT_BLOCKLIST = Array.isArray(window.YTBG_DEFAULT_BLOCKLIST)
+  ? window.YTBG_DEFAULT_BLOCKLIST.slice()
+  : ["18+", "xxx", "porn", "nsfw", "bokep", "dewasa", "vulgar"];
 
 const toggle = document.getElementById("toggle");
 const status = document.getElementById("status");

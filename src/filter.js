@@ -9,11 +9,12 @@
 (() => {
   "use strict";
 
-  // default blocklist konservatif; bisa diedit user via popup.
-  const DEFAULT_BLOCKLIST = [
-    "18+", "xxx", "porn", "nsfw", "hot", "seksi", "sexy",
-    "dewasa", "bokep", "telanjang", "vulgar"
-  ];
+  // daftar default dari blocklist.js (di-load lebih dulu di manifest);
+  // fallback ringkas bila tak tersedia.
+  const DEFAULT_BLOCKLIST =
+    (typeof window !== "undefined" && Array.isArray(window.YTBG_DEFAULT_BLOCKLIST))
+      ? window.YTBG_DEFAULT_BLOCKLIST.slice()
+      : ["18+", "xxx", "porn", "nsfw", "bokep", "dewasa", "vulgar"];
 
   let filterEnabled = false;
   let blocklist = DEFAULT_BLOCKLIST.slice();
