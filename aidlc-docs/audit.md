@@ -15,3 +15,10 @@
 **Context**: Locks core requirement — periodic glitch at every 2-minute multiple of playback time, ~5s buffering simulation.
 
 ---
+
+## Code Generation + Test
+**Timestamp**: 2026-06-16T00:05:00Z
+**AI Response**: Generated MV3 extension (manifest.json, src/content.js, src/overlay.css, src/popup.html, src/popup.js, icons/). Unit-tested trigger logic in Node: hits at 120/240/360s, anti-double-fire PASS, seek re-arm PASS. Committed to git.
+**Context**: Construction complete. Manual browser load-test pending (user side).
+
+---

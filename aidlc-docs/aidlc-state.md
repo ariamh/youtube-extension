@@ -5,8 +5,8 @@
 - **Lifecycle**:
   - [x] Workspace Detection (greenfield)
   - [x] Requirements Analysis (minimal + 1 clarify)
-  - [ ] Code Generation
-  - [ ] Build & manual test instructions
+  - [x] Code Generation
+  - [x] Build & manual test instructions (Node unit test of trigger logic)
 
 ## Decisions
 - MV3, no remote code, no permissions beyond content script on youtube.com.
