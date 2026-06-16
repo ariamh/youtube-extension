@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "YT Buffer Glitch",
-  "version": "1.1.1",
-  "description": "Simulasi gangguan jaringan: video YouTube buffering 5 menit tiap kelipatan 2 menit waktu putar.",
+  "version": "1.2.0",
+  "description": "Simulasi gangguan jaringan (buffering 5 menit tiap kelipatan 2 menit) + penyaring konten dewasa berbasis keyword (opsional).",
   "permissions": ["storage"],
   "action": {
     "default_popup": "src/popup.html",
@@ -20,7 +20,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.youtube.com/*"],
-      "js": ["src/content.js"],
+      "js": ["src/content.js", "src/filter.js"],
       "css": ["src/overlay.css"],
       "run_at": "document_idle",
       "all_frames": false
