@@ -30,3 +30,17 @@
 @keyframes ytbg-spin {
   to { transform: rotate(360deg); }
 }
+
+/* Banner peringatan transkrip */
+#ytbg-transcript-warn {
+  position: relative;
+  z-index: 2147483645;
+  background: #b00020;
+  color: #fff;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin: 0 0 10px;
+  line-height: 1.4;
+}

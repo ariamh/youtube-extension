@@ -7,6 +7,8 @@ const toggle = document.getElementById("toggle");
 const status = document.getElementById("status");
 const filterToggle = document.getElementById("filterToggle");
 const filterStatus = document.getElementById("filterStatus");
+const transcriptToggle = document.getElementById("transcriptToggle");
+const transcriptStatus = document.getElementById("transcriptStatus");
 const blocklistEl = document.getElementById("blocklist");
 const saveBtn = document.getElementById("save");
 const savedEl = document.getElementById("saved");
@@ -21,12 +23,18 @@ function renderFilter(on) {
   filterStatus.textContent = on ? "Status: AKTIF" : "Status: nonaktif";
   filterStatus.style.color = on ? "#3ea6ff" : "#888";
 }
+function renderTranscript(on) {
+  transcriptToggle.checked = on;
+  transcriptStatus.textContent = on ? "Status: AKTIF" : "Status: nonaktif";
+  transcriptStatus.style.color = on ? "#3ea6ff" : "#888";
+}
 
 chrome.storage.local.get(
-  { enabled: true, filterEnabled: false, blocklist: DEFAULT_BLOCKLIST },
+  { enabled: true, filterEnabled: false, transcriptScanEnabled: false, blocklist: DEFAULT_BLOCKLIST },
   (r) => {
     render(r.enabled);
     renderFilter(r.filterEnabled);
+    renderTranscript(r.transcriptScanEnabled);
     const list = Array.isArray(r.blocklist) && r.blocklist.length ? r.blocklist : DEFAULT_BLOCKLIST;
     blocklistEl.value = list.join("\n");
   }
@@ -40,6 +48,11 @@ toggle.addEventListener("change", () => {
 filterToggle.addEventListener("change", () => {
   const filterEnabled = filterToggle.checked;
   chrome.storage.local.set({ filterEnabled }, () => renderFilter(filterEnabled));
+});
+
+transcriptToggle.addEventListener("change", () => {
+  const transcriptScanEnabled = transcriptToggle.checked;
+  chrome.storage.local.set({ transcriptScanEnabled }, () => renderTranscript(transcriptScanEnabled));
 });
 
 saveBtn.addEventListener("click", () => {

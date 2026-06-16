@@ -65,6 +65,17 @@
     </label>
   </div>
   <div class="status" id="filterStatus"></div>
+
+  <div class="row" style="margin-top:10px">
+    <span class="label">Scan transkrip video</span>
+    <label class="switch">
+      <input type="checkbox" id="transcriptToggle" />
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="status" id="transcriptStatus"></div>
+  <div class="sub">Saat video diputar, ambil caption/transkrip lalu cek kata terlarang. Bila terdeteksi, tampil banner peringatan. Hanya jika video punya caption — fail-open.</div>
+
   <div class="sub">Sembunyikan video bila judul/channel mengandung kata terlarang (berbasis teks, tidak 100% akurat). Satu kata per baris:</div>
   <textarea id="blocklist" spellcheck="false"></textarea>
   <button id="save">Simpan daftar</button>

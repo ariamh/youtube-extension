@@ -38,3 +38,11 @@
 **Context**: Construction — systematic debugging, root cause sebelum fix.
 
 ---
+
+## Feature — scan transkrip video (melengkapi keyword filter)
+**Timestamp**: 2026-06-16T01:30:00Z
+**User Input**: "mcp yang untuk script apakah masih ingat?" / "apa perbedaan dengan anaisbetts/mcp-youtube" / "Apakah bisa Anda pasang di sini untuk melengkapi aplikasi tersebut?"
+**AI Response**: Jelaskan mcp-youtube = MCP server utk LLM (pakai yt-dlp), tak bisa masuk extension (beda lapisan). Clarify timeout → default opsi 2: tambah scan transkrip ke DALAM extension. src/transcript.js: parse ytInitialPlayerResponse dari inline <script> (isolated world tak bisa baca window.* halaman), fetch caption timedtext json3 (same-origin, prioritas id>en>track0), cocokkan blocklist → banner peringatan. DEFAULT OFF, fail-open (tak ada caption/error → tak memblok). Wire manifest (4 script), popup toggle ke-3, CSS banner. Uji brace-balance parser + match ALL PASS. v1.3.0->1.4.0.
+**Context**: Construction — fitur baru gated default OFF, fail-open external data (pola AI-DLC).
+
+---
