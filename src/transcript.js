@@ -101,6 +101,48 @@
     return parts.join(" ");
   }
 
+  // ---- FALLBACK: scrape panel transkrip dari DOM ----
+  // Dipakai bila timedtext gagal/kosong. Buka panel transkrip via tombol,
+  // tunggu segmen ter-render, lalu kumpulkan teksnya.
+  function collectTranscriptSegments() {
+    const segs = document.querySelectorAll(
+      "ytd-transcript-segment-renderer .segment-text, ytd-transcript-segment-renderer yt-formatted-string"
+    );
+    if (!segs.length) return "";
+    return Array.from(segs).map((n) => n.textContent.trim()).join(" ");
+  }
+
+  function findTranscriptButton() {
+    // tombol "Show transcript" punya aria-label bervariasi (id/en)
+    const sel = [
+      'button[aria-label*="transcript" i]',
+      'button[aria-label*="transkrip" i]',
+      'ytd-button-renderer[aria-label*="transcript" i] button',
+      'tp-yt-paper-button[aria-label*="transcript" i]'
+    ].join(",");
+    return document.querySelector(sel);
+  }
+
+  function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+
+  async function fetchTranscriptFromDOM() {
+    // sudah terbuka?
+    let text = collectTranscriptSegments();
+    if (text) return text;
+
+    const btn = findTranscriptButton();
+    if (!btn) return ""; // tak ada tombol transkrip → menyerah (fail-open)
+    btn.click();
+
+    // tunggu segmen ter-render (maks ~3 detik)
+    for (let i = 0; i < 12; i++) {
+      await sleep(250);
+      text = collectTranscriptSegments();
+      if (text) break;
+    }
+    return text;
+  }
+
   function showBanner(word) {
     removeBanner();
     const host =
@@ -128,31 +170,42 @@
     lastVideoId = vid;
     removeBanner();
 
+    let text = "";
+
+    // 1) coba timedtext (cepat, tanpa membuka panel)
     const tracks = getCaptionTracks();
-    if (!tracks.length) return; // fail-open: tak ada caption → tidak memblok
-
-    // prioritas: Indonesia, lalu English, lalu track pertama
-    const pick =
-      tracks.find((t) => (t.languageCode || "").startsWith("id")) ||
-      tracks.find((t) => (t.languageCode || "").startsWith("en")) ||
-      tracks[0];
-
-    try {
-      const text = await fetchTranscript(pick);
-      const hit = matchInText(text);
-      if (hit && vid === lastVideoId && scanEnabled) showBanner(hit);
-    } catch (_) {
-      // fail-open: error fetch/parse → tidak memblok
+    if (tracks.length) {
+      const pick =
+        tracks.find((t) => (t.languageCode || "").startsWith("id")) ||
+        tracks.find((t) => (t.languageCode || "").startsWith("en")) ||
+        tracks[0];
+      try {
+        text = await fetchTranscript(pick);
+      } catch (_) { /* lanjut ke fallback */ }
     }
+
+    // 2) fallback: scrape panel transkrip dari DOM bila timedtext kosong/gagal
+    if (!text) {
+      try {
+        text = await fetchTranscriptFromDOM();
+      } catch (_) { /* fail-open */ }
+    }
+
+    if (!text) return; // fail-open: tak ada transkrip → tidak memblok
+
+    const hit = matchInText(text);
+    if (hit && vid === lastVideoId && scanEnabled) showBanner(hit);
   }
 
   // YouTube SPA: scan ulang tiap navigasi watch
   window.addEventListener("yt-navigate-finish", () => setTimeout(maybeScan, 800));
-  // player response kadang siap belakangan
+  // player response / panel kadang siap belakangan
   let tries = 0;
   const poll = setInterval(() => {
     if (++tries > 10) { clearInterval(poll); return; }
-    if (scanEnabled && getCaptionTracks().length) { maybeScan(); }
+    if (scanEnabled && location.pathname.startsWith("/watch") && getVideoId() !== lastVideoId) {
+      maybeScan();
+    }
   }, 1000);
 
   maybeScan();

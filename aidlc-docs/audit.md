@@ -46,3 +46,11 @@
 **Context**: Construction — fitur baru gated default OFF, fail-open external data (pola AI-DLC).
 
 ---
+
+## Feature — fallback scrape panel transkrip DOM
+**Timestamp**: 2026-06-16T02:00:00Z
+**User Input**: "Untuk mengambil script YouTube" / "Ya, tambahkan fallback"
+**AI Response**: Tambah fallback di transcript.js: bila timedtext gagal/kosong → buka panel transkrip (klik tombol aria-label transcript/transkrip id+en), tunggu ytd-transcript-segment-renderer ter-render (maks ~3dtk), kumpulkan .segment-text. maybeScan jadi 2-tahap: timedtext → DOM. Poll diperbaiki agar fire utk semua /watch (bukan hanya yg punya captionTracks) supaya fallback jalan. Tetap fail-open. v1.4.0->1.5.0. Syntax OK.
+**Context**: Construction — robustness, multi-sumber pengambilan transkrip.
+
+---
