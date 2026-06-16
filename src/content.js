@@ -15,6 +15,9 @@
   let firedMarks = new Set(); // mark detik yang sudah dipicu (anti double-fire)
   let glitching = false;
   let overlayEl = null;
+  let glitchTimer = null;
+  let keepPausedGuard = null;
+  let onPlayBlock = null;
 
   // ---- state (toggle) ----
   chrome.storage.local.get({ enabled: true }, (r) => {
@@ -57,11 +60,20 @@
     overlayEl = null;
   }
 
-  function clearGlitch() {
+  function endGlitch(v) {
+    if (glitchTimer) { clearTimeout(glitchTimer); glitchTimer = null; }
+    if (keepPausedGuard) { clearInterval(keepPausedGuard); keepPausedGuard = null; }
+    if (v && onPlayBlock) v.removeEventListener("play", onPlayBlock);
+    onPlayBlock = null;
     removeOverlay();
     glitching = false;
-    if (currentVideo && currentVideo.paused) {
-      currentVideo.play().catch(() => {});
+  }
+
+  function clearGlitch() {
+    const v = currentVideo;
+    endGlitch(v);
+    if (v && v.paused) {
+      v.play().catch(() => {});
     }
   }
 
@@ -71,9 +83,16 @@
     const v = currentVideo;
     v.pause();
     showOverlay();
-    setTimeout(() => {
-      removeOverlay();
-      glitching = false;
+
+    // YouTube akan mencoba play() lagi sendiri — paksa tetap pause selama glitch.
+    onPlayBlock = () => { if (glitching) v.pause(); };
+    v.addEventListener("play", onPlayBlock);
+    keepPausedGuard = setInterval(() => {
+      if (glitching && !v.paused) v.pause();
+    }, 250);
+
+    glitchTimer = setTimeout(() => {
+      endGlitch(v);
       // hanya lanjut bila video ini masih aktif & extension masih ON
       if (enabled && currentVideo === v) {
         v.play().catch(() => {});

@@ -30,3 +30,11 @@
 **Context**: Construction — scoped edit, satu konstanta.
 
 ---
+
+## Bugfix — buffering tidak bertahan 5 menit
+**Timestamp**: 2026-06-16T00:15:00Z
+**User Input**: "bufferingnya bug tidak 5 menit tolong perbaiki."
+**AI Response**: Root cause — pause() dipanggil sekali; YouTube auto play() lagi (~1-2s) → video lanjut walau overlay tampil. Fix: enforce pause selama glitch via listener 'play' + interval guard 250ms yang re-pause bila video play sendiri; cleanup di endGlitch (clearTimeout/clearInterval/removeEventListener). Diuji simulasi 20x play() spam → tetap paused (PASS).
+**Context**: Construction — systematic debugging, root cause sebelum fix.
+
+---
